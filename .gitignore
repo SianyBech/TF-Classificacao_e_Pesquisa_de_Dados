@@ -125,3 +125,6 @@ dmypy.json
 data_raw/
 data_clean/
 bin_files/
+# Arquivos de documentação
+docs/proposta inicial.md
+exemplo implementacao.md
