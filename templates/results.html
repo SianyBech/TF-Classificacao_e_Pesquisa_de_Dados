@@ -22,24 +22,28 @@
 
     {% if error %}
         <p style="color: red;">{{ error }}</p>
-    {% elif results %}
-        <p>Total de registros encontrados: {{ total }}</p>
+    {% elif diff_data %}
+        <h2>Diferença de Matrículas</h2>
         <table>
             <thead>
                 <tr>
                     <th>Ano</th>
-                    <th>Sexo</th>
-                    <th>Quantidade</th>
+                    <th>Total de Matrículas</th>
                 </tr>
             </thead>
             <tbody>
-                {% for result in results %}
                 <tr>
-                    <td>{{ result.year }}</td>
-                    <td>{{ result.sexo }}</td>
-                    <td>{{ result.quantidade }}</td>
+                    <td>{{ diff_data.year_from }}</td>
+                    <td>{{ diff_data.qty_from }}</td>
                 </tr>
-                {% endfor %}
+                <tr>
+                    <td>{{ diff_data.year_to }}</td>
+                    <td>{{ diff_data.qty_to }}</td>
+                </tr>
+                <tr>
+                    <td><strong>Diferença</strong></td>
+                    <td><strong>{{ diff_data.difference }}</strong></td>
+                </tr>
             </tbody>
         </table>
     {% else %}

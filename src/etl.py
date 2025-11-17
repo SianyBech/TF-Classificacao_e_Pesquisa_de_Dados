@@ -34,6 +34,8 @@ def etl_transform(in_path: str, out_path: str, delimiter=',', quotechar='"'):
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
 
     with open(in_path, newline='', encoding='cp1252') as fin:
+        # Pula a primeira linha do CSV, que contém caracteres inválidos.
+        next(fin)
         reader = csv.reader(fin, delimiter=delimiter, quotechar=quotechar)
         header = next(reader)
         year_cols = detect_years_from_header(header)

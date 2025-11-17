@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 import csv
-from src.indexer import load_index, search_by_municipio
+from src.indexer import load_index, search_by_municipio, calculate_enrollment_difference
 
 app = Flask(__name__, template_folder='../templates')
 
@@ -40,7 +40,8 @@ def search():
     if not municipio:
         return render_template('results.html', error="O nome do município é obrigatório.")
 
-    results, total = search_by_municipio(
+    # Calcula a diferença de matrículas
+    diff_data = calculate_enrollment_difference(
         BIN_PATH,
         index,
         municipio,
@@ -50,8 +51,7 @@ def search():
     )
 
     return render_template('results.html',
-                           results=results,
-                           total=total,
+                           diff_data=diff_data,
                            municipio=municipio,
                            ano_inicio=ano_inicio,
                            ano_fim=ano_fim,

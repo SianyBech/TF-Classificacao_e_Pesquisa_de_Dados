@@ -35,6 +35,8 @@ def parse_number_robust(token: str):
         t2 = t.replace('.', '').replace(',', '.')
     elif t.count(',') > 0 and t.count('.') == 0:
         t2 = t.replace(',', '.')
+    elif t.count('.') > 0 and t.count(',') == 0:
+        t2 = t.replace('.', '')
     else:
         t2 = t
     # remover possíveis milhares com espaços

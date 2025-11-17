@@ -31,3 +31,41 @@ def search_by_municipio(bin_path: str, index: Dict[str, list], municipio_query: 
     start = (page-1)*page_size
     end = start + page_size
     return records[start:end], total
+
+def calculate_enrollment_difference(bin_path: str, index: Dict[str, list], municipio_query: str,
+                                    year_from: int, year_to: int, sexo=None):
+    """
+    Calcula a diferença no número de matrículas entre dois anos.
+    """
+    key = normalize_text(municipio_query)
+    offsets = index.get(key, [])
+    
+    records_from = []
+    records_to = []
+
+    for off in offsets:
+        rec = read_record_at(bin_path, off)
+        
+        # Aplica filtro de sexo se especificado
+        if sexo and rec['sexo'] != sexo:
+            continue
+            
+        if rec['year'] == year_from:
+            records_from.append(rec)
+        
+        if rec['year'] == year_to:
+            records_to.append(rec)
+
+    # Soma as quantidades para os anos de início e fim
+    qty_from = sum(r['quantidade'] for r in records_from)
+    qty_to = sum(r['quantidade'] for r in records_to)
+
+    difference = qty_to - qty_from
+    
+    return {
+        'year_from': year_from,
+        'qty_from': qty_from,
+        'year_to': year_to,
+        'qty_to': qty_to,
+        'difference': difference
+    }
