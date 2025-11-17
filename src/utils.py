@@ -45,8 +45,6 @@ def parse_number_robust(token: str):
     t2 = re.sub(r'[^0-9\.\-]', '', t2)
     try:
         f = float(t2)
-        if abs(f - int(f)) < 1e-9:
-            return int(round(f))
-        return f
+        return int(round(f))
     except:
         return None
