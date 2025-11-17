@@ -62,12 +62,12 @@ def calculate_enrollment_difference(bin_path: str, index: Dict[str, list], munic
 
     difference = qty_to - qty_from
     
-    if difference > 0:
-        variation_text = 'aumento'
-    elif difference < 0:
-        variation_text = 'diminuicao'
-    else:
-        variation_text = 'estavel'
+    variation_percentage = 0
+    if qty_from > 0:
+        variation_percentage = (difference / qty_from) * 100
+    elif difference > 0:
+        # Se começou do zero e aumentou, a variação é "infinita", podemos mostrar 100% para simplificar
+        variation_percentage = 100
 
     return {
         'year_from': year_from,
@@ -75,5 +75,5 @@ def calculate_enrollment_difference(bin_path: str, index: Dict[str, list], munic
         'year_to': year_to,
         'qty_to': qty_to,
         'difference': difference,
-        'variation': variation_text
+        'variation': variation_percentage
     }

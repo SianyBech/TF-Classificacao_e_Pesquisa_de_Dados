@@ -34,19 +34,31 @@
             <tbody>
                 <tr>
                     <td>{{ diff_data.year_from }}</td>
-                    <td>{{ diff_data.qty_from }}</td>
+                    <td>{{ diff_data.qty_from|int }}</td>
                 </tr>
                 <tr>
                     <td>{{ diff_data.year_to }}</td>
-                    <td>{{ diff_data.qty_to }}</td>
+                    <td>{{ diff_data.qty_to|int }}</td>
                 </tr>
                 <tr>
                     <td><strong>Diferença</strong></td>
-                    <td><strong>{{ diff_data.difference }}</strong></td>
+                    <td><strong>{{ diff_data.difference|int }}</strong></td>
                 </tr>
                 <tr>
                     <td><strong>Variação</strong></td>
-                    <td><strong>{{ diff_data.variation }}</strong></td>
+                    <td>
+                        <strong>
+                            {% if diff_data.variation is number and diff_data.variation > 0 %}
+                                O número de matrículas aumentou {{ diff_data.variation|round(2) }}%
+                            {% elif diff_data.variation is number and diff_data.variation < 0 %}
+                                O número de matrículas diminuiu {{ (diff_data.variation * -1)|round(2) }}%
+                            {% elif diff_data.variation == 0 %}
+                                O número de matrículas permaneceu estável
+                            {% else %}
+                                {{ diff_data.variation }}
+                            {% endif %}
+                        </strong>
+                    </td>
                 </tr>
             </tbody>
         </table>
