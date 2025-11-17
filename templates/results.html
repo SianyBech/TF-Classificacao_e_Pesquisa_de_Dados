@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados da Busca</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 2em; }
+        table { width: 100%; border-collapse: collapse; margin-top: 2em; }
+        th, td { border: 1px solid #ccc; padding: 0.8em; text-align: left; }
+        th { background-color: #f4f4f4; }
+        a { color: #007bff; }
+    </style>
+</head>
+<body>
+    <h1>Resultados da Busca</h1>
+    <p>
+        <strong>Município:</strong> {{ municipio }} <br>
+        <strong>Período:</strong> {{ ano_inicio or 'N/A' }} - {{ ano_fim or 'N/A' }} <br>
+        <strong>Sexo:</strong> {{ sexo or 'Ambos' }}
+    </p>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% elif results %}
+        <p>Total de registros encontrados: {{ total }}</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Ano</th>
+                    <th>Sexo</th>
+                    <th>Quantidade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                <tr>
+                    <td>{{ result.year }}</td>
+                    <td>{{ result.sexo }}</td>
+                    <td>{{ result.quantidade }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Nenhum resultado encontrado para os critérios informados.</p>
+    {% endif %}
+
+    <br>
+    <a href="/">Nova Busca</a>
+</body>
+</html>
