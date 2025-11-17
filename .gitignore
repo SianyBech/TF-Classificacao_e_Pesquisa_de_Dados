@@ -122,7 +122,6 @@ dmypy.json
 .pyre/
 
 # data files
-data_raw/
 data_clean/
 bin_files/
 # Arquivos de documentação

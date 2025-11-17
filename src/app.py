@@ -13,18 +13,23 @@ index = load_index(INDEX_PATH)
 def index_page():
     municipios = set()
     try:
-        # Lê os municípios diretamente do arquivo CSV bruto, conforme solicitado.
-        # Usa encoding 'cp1252' que é comum em arquivos CSV governamentais no Brasil.
-        with open('data_raw/dee-5406.csv', 'r', encoding='cp1252', newline='') as f:
-            # O arquivo CSV fornecido tem um caractere inválido na primeira linha, então pulamos ela.
-            next(f)
-            reader = csv.reader(f)
-            # Pulamos a linha do cabeçalho.
-            next(reader)
-            # Adiciona cada município a um set para garantir valores únicos.
-            for row in reader:
-                if row:
-                    municipios.add(row[0])
+        # Lista de arquivos para carregar os municípios
+        municipios_files = ['data_raw/dee-5406.csv', 'data_raw/dee-5407.csv']
+        for file_path in municipios_files:
+            try:
+                with open(file_path, 'r', encoding='cp1252', newline='') as f:
+                    # Pula a primeira linha do CSV, que contém caracteres inválidos.
+                    next(f)
+                    reader = csv.reader(f)
+                    # Pulamos a linha do cabeçalho.
+                    next(reader)
+                    # Adiciona cada município a um set para garantir valores únicos.
+                    for row in reader:
+                        if row:
+                            municipios.add(row[0])
+            except (FileNotFoundError, StopIteration):
+                # Se um arquivo não for encontrado, apenas continua para o próximo
+                continue
     except (FileNotFoundError, StopIteration):
         # Em caso de erro na leitura do arquivo, a lista de municípios ficará vazia.
         pass
