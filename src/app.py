@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import csv
 from src.indexer import load_index, search_by_municipio
 
 app = Flask(__name__, template_folder='../templates')
@@ -10,7 +11,24 @@ index = load_index(INDEX_PATH)
 
 @app.route('/')
 def index_page():
-    return render_template('index.html')
+    municipios = set()
+    try:
+        # Lê os municípios diretamente do arquivo CSV bruto, conforme solicitado.
+        # Usa encoding 'cp1252' que é comum em arquivos CSV governamentais no Brasil.
+        with open('data_raw/dee-5406.csv', 'r', encoding='cp1252', newline='') as f:
+            # O arquivo CSV fornecido tem um caractere inválido na primeira linha, então pulamos ela.
+            next(f)
+            reader = csv.reader(f)
+            # Pulamos a linha do cabeçalho.
+            next(reader)
+            # Adiciona cada município a um set para garantir valores únicos.
+            for row in reader:
+                if row:
+                    municipios.add(row[0])
+    except (FileNotFoundError, StopIteration):
+        # Em caso de erro na leitura do arquivo, a lista de municípios ficará vazia.
+        pass
+    return render_template('index.html', municipios=sorted(list(municipios)))
 
 @app.route('/search')
 def search():
@@ -41,3 +59,5 @@ def search():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+# Forçar recarregamento

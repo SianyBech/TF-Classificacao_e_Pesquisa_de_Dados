@@ -16,13 +16,26 @@
     <h1>Busca de Matrículas no Rio Grande do Sul (2014-2024)</h1>
     <form action="/search" method="get">
         <label for="municipio">Município:</label>
-        <input type="text" id="municipio" name="municipio" required>
+        <select id="municipio" name="municipio" required>
+            <option value="">Selecione um município</option>
+            {% for mun in municipios %}
+            <option value="{{ mun }}">{{ mun }}</option>
+            {% endfor %}
+        </select>
 
         <label for="ano_inicio">Ano Início:</label>
-        <input type="number" id="ano_inicio" name="ano_inicio" min="2014" max="2024">
+        <select id="ano_inicio" name="ano_inicio">
+            {% for ano in range(2014, 2025) %}
+            <option value="{{ ano }}">{{ ano }}</option>
+            {% endfor %}
+        </select>
 
         <label for="ano_fim">Ano Fim:</label>
-        <input type="number" id="ano_fim" name="ano_fim" min="2014" max="2024">
+        <select id="ano_fim" name="ano_fim">
+            {% for ano in range(2014, 2025) %}
+            <option value="{{ ano }}" {% if ano == 2024 %}selected{% endif %}>{{ ano }}</option>
+            {% endfor %}
+        </select>
 
         <label for="sexo">Sexo:</label>
         <select id="sexo" name="sexo">
